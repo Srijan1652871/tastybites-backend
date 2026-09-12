@@ -90,8 +90,22 @@ const updateReservationStatus = async (req, res) => {
   }
 };
 
+const deleteReservation = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const reservation = await Reservation.findByIdAndDelete(id);
+    if (!reservation) {
+      return res.status(404).json({ success: false, message: "Reservation not found." });
+    }
+    res.status(200).json({ success: true, message: "Reservation deleted successfully." });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   createReservation,
   getAllReservations,
   updateReservationStatus,
+  deleteReservation,
 };
