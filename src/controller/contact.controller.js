@@ -11,7 +11,7 @@ const createContact = async (req, res) => {
       });
     }
 
-    const contact = await Contact.create({ name, email, subject, message });
+    const contact = await Contact.create({ userId: req.user.id, name, email, subject, message });
 
     res.status(201).json({
       success: true,
@@ -28,7 +28,9 @@ const createContact = async (req, res) => {
 
 const getAllMessages = async (req, res) => {
   try {
-    const messages = await Contact.find().sort({ createdAt: -1 });
+    const messages = await Contact.find()
+      .sort({ createdAt: -1 })
+      .populate("userId", "username email");
     res.status(200).json({
       success: true,
       message: "Messages fetched successfully",

@@ -42,7 +42,7 @@ const getMenuItemById = async (req, res) => {
 
 const createMenuItem = async (req, res) => {
   try {
-    const { name, description, category, price, availability } = req.body;
+    const { name, description, category, price, availability, calories, prepTime, servings, dietaryTags } = req.body;
     console.log(
       "data coming in create controller",
       name,
@@ -66,6 +66,10 @@ const createMenuItem = async (req, res) => {
         url: uploadImage.url,
         public_id: uploadImage.public_id,
       },
+      calories: calories || "",
+      prepTime: prepTime || "",
+      servings: servings || "",
+      dietaryTags: dietaryTags ? (Array.isArray(dietaryTags) ? dietaryTags : JSON.parse(dietaryTags)) : [],
     });
     res.status(201).json({
       success: true,
@@ -83,7 +87,7 @@ const createMenuItem = async (req, res) => {
 const updateMenuItem = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description, category, price, availability } = req.body;
+    const { name, description, category, price, availability, calories, prepTime, servings, dietaryTags } = req.body;
 
     const existMenuItem = await Menu.findById(id);
     if (!existMenuItem) {
@@ -98,6 +102,12 @@ const updateMenuItem = async (req, res) => {
     if (category) existMenuItem.category = category;
     if (price) existMenuItem.price = price;
     if (availability !== undefined) existMenuItem.availability = availability;
+    if (calories !== undefined) existMenuItem.calories = calories;
+    if (prepTime !== undefined) existMenuItem.prepTime = prepTime;
+    if (servings !== undefined) existMenuItem.servings = servings;
+    if (dietaryTags !== undefined) {
+      existMenuItem.dietaryTags = Array.isArray(dietaryTags) ? dietaryTags : JSON.parse(dietaryTags);
+    }
 
     if (req.file) {
       const uploadImage = await cloudinary.uploader.upload(req.file.path, {

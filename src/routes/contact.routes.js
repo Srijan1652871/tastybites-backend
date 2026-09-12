@@ -7,10 +7,11 @@ const {
 
 const router = express.Router();
 
-// Public - anyone can send a message
-router.post("/", createContact);
+// Requires login to send a message
+router.post("/", authentication, createContact);
 
 // Admin protected route
 router.get("/admin", authentication, getAllMessages);
 
 module.exports = router;
+

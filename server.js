@@ -10,6 +10,7 @@ const menuItemRoutes = require("./src/routes/menuItem.routes");
 const userRoutes = require("./src/routes/user.routes");
 const reservationRoutes = require("./src/routes/reservation.routes");
 const contactRoutes = require("./src/routes/contact.routes");
+const orderRoutes = require("./src/routes/order.routes");
 
 const app = express();
 app.use(
@@ -30,6 +31,7 @@ app.use("/api/menu-items", menuItemRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/reservations", reservationRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/orders", orderRoutes);
 
 app.listen(5000, () => {
   console.log("server running....");

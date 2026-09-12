@@ -12,6 +12,7 @@ const createReservation = async (req, res) => {
     }
 
     const reservation = await Reservation.create({
+      userId: req.user.id,
       name,
       email,
       phone,
@@ -37,7 +38,9 @@ const createReservation = async (req, res) => {
 
 const getAllReservations = async (req, res) => {
   try {
-    const reservations = await Reservation.find().sort({ createdAt: -1 });
+    const reservations = await Reservation.find()
+      .sort({ createdAt: -1 })
+      .populate("userId", "username email");
     res.status(200).json({
       success: true,
       message: "Reservations fetched successfully",

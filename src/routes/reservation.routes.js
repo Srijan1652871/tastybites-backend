@@ -8,11 +8,12 @@ const {
 
 const router = express.Router();
 
-// Public - anyone can make a reservation
-router.post("/", createReservation);
+// Requires login to make a reservation
+router.post("/", authentication, createReservation);
 
 // Admin protected routes
 router.get("/admin", authentication, getAllReservations);
 router.put("/admin/:id", authentication, updateReservationStatus);
 
 module.exports = router;
+
